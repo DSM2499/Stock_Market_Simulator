@@ -56,7 +56,9 @@ These parameters define market microstructure, liquidity, and diversity.
 - Designing specific experimental market conditions.
 - Integration with ML training loops (via logs).
 
-## Agent Strategies
+---
+
+### 2.2 Agent Strategies
 To replicate the diversity of real-world market participants, the simulation employs a range of trader archetypes—each with distinct decision heuristics and market behaviors. These agents embody classical strategies in behavioral finance, algorithmic trading, and market microstructure theory.
 #### 1. Momentum Traders
 - **Behavior**:  Buy assets that are rising in price, sell those declining—“ride the trend.”
@@ -94,6 +96,113 @@ This spectrum of strategies enables the simulation to study phenomena such as:
 - Ecosystem diversity under pressure
 - The emergence of collective behavior
 
+---
+
+### 2.3 Exchange Layer - Simulated Market Microstructure
+The Exchange Layer is the central market simulation engine that emulates a realistic multi-asset trading environment. It is built around the mechanics of a limit order book, inspired by real-world stock exchanges. This layer governs how agents interact with the market and how asset prices evolve. It supports key market functionalities:
+#### 1. Order Aggregation and Matching
+- Agents submit buy or sell orders per stock during each time step.
+- These orders include the following details:
+    - Desired stock
+    - Order Type (buy/sell)
+    - Quantity
+    - Agent ID
+- The exchange does not simulate order price levels directly; instead, it sorts and matches orders using heuristics (e.g., highest buyer matched with lowest seller).
+- Matching is done stock-wise with quantity-based prioritization, simulating order book depth behavior.
+
+#### 2. Trade Execution and Settlement
+- For matched trades:
+    - The buyer’s cash is debited.
+    - The seller’s portfolio is reduced.
+    - Both agents are charged a transaction fee, simulating brokerage or liquidity costs.
+- Executed trades are recorded in a central `trade_log`, including fields like stock, price, quantity, buyer/seller IDs and fees.
+- Trading volume and trade count are updated in real time.
+
+#### 3. OHLC Generation (Per Stock)
+At the end of each day, the exchange calculates:
+- Open: Price of the first trade of the day
+- High: Maximum price among trades that day
+- Low: Minimum price
+- Close: Last trade price of the day
+- Volume: Sum of all quantities traded for that stock
+This OHLC + Volume data is appended to a per-stock history (`daily_ohlc`) and serves as the visual and analytical foundation for price tracking, sentiment impact analysis amd technical strategies.
+
+#### 4. Price Drift and Market Impact
+- If trades occurred, a larger Gaussian noise (𝜎 ~ 0.1) is added to simulate liquidity and volatility-driven drift.
+- If no trades occurred, smaller noise (𝜎 ~ 0.01) simulates time decay and random walk behavior.
+- This introduces realistic price variance even in the absence of trades, enabling agents to respond to passive signals.
+
+#### 5. Transaction Fee System
+- A configurable `transaction_cost_rate` simulates liquidity access costs.
+- Total fees collected are logged, and can be used to:
+    - Analyze market profitability
+    - Study sustainability of liquidity provision
+    - Compare strategy costs under various fee models
+
+---
+
+### 2.4 Sentiment Engine - Modeling Exogenous Shocks
+The Sentiment Engine introduces external news, earnings reports, and macro events as probabilistic, unstructured influences on market behavior. This is crucial to simulate the “irrational” or sudden volatility seen in real markets.
+
+#### 1. Event Scheduling and Randomization
+- At each simulation step (day and/or minute), the engine decides—using a configurable probability—whether a sentiment event occurs.
+- If triggered:
+    - A stock is randomly selected.
+    - The magnitude of sentiment (positive or negative) is sampled from a distribution (e.g., normal or uniform).
+    - The direction (bullish/bearish) is also randomized unless otherwise constrained.
+This mimics the unpredictability of breaking news, earnings beats/misses, or regulatory shifts.
+
+#### 2. Sentiment Broadcasting to Agents
+- Once generated, the sentiment shock is broadcasted to all agents
+- How each agent interprets the news depends on their strategy type:
+    - Momentum agents may aggressively buy on positive sentiment.
+    - Risk-averse agents may reduce trading in volatile (positive or negative) conditions.
+    - Arbitrage traders might act only if spreads widen in response.
+This introduces an element of agent heterogeneity and allows the study of behavioral propagation of information through the market.
+
+#### 3. Logging and Analysis
+- All sentiment events are timestamped and logged in `sentiment_log.csv`, recording:
+    - `day`, `minute`
+    - `stock`
+    - `sentiment`
+- This log is used post-simulation to:
+    - Correlate agent reactions to sentiment spikes
+    - Visualize sentiment trends alongside price movement
+    - Compare strategy robustness under high-sentiment conditions
+
+---
+### 2.5 Real-Time Visualization via REST API Architecture
+In traditional simulations, visualization is often performed after the simulation ends. However, this system introduces a modular, real-time visualization architecture using a REST API server (FastAPI) and a web-based dashboard (Streamlit), fully decoupling simulation from frontend rendering.
+
+#### 1. FastAPI as Middleware
+The FastAPI server acts as a real-time middleware between the simulation engine and the visualization interface. It is responsible for receiving updates from the simulation loop, storing them in memory, and exposing them via endpoints consumable by the frontend. This modular architecture promotes parallel development and makes the system suitable for remote or distributed execution.
+
+##### Simulation → API (POST Updates)
+At each simulation time stamp (daily)
+- The simulation calls:
+    - `POST /update/ohlc` with OHLC + volume per stock
+    - `POST /update/wealth` with agent-level wealth updates
+    - `POST /update/sentiment` with market sentiment data
+These routes receive structured payloads validated via Pydantic schemas, ensuring data consistency and schema adherence.
+
+##### API → Dashboard (GET Queries)
+The dashboard issues:
+- `GET /data/ohlc` - Fetches historical price/volume data
+- `GET /data/wealth` - Fetches agent wealth history
+- `GET /data/sentiment` - Fetches the stream of sentiment events
+These endpoints allow the dashboard to refresh data without needing direct access to simulation memory or log files, enabling asynchronous and scalable real-time visualization.
+
+##### In-Memory Data Management with `DataStore`
+The `DataStore` class acts as the temporary in-memory database within the API:
+- Stores OHLC, wealth, and sentiment data in structured Python lists.
+- Converts these to pandas DataFrames on-the-fly for visualization.
+- Supports dynamic extension and querying with minimal performance overhead.
+- Ensures no disk I/O bottleneck, thus maintaining the speed required for real-time updates.
+This approach ensures flexibility while keeping the system lightweight and fast.
+
+---
+### 2.6 Real-Time Interactive Dashboard (Streamlit Frontend)
+The Streamlit dashboard offers a dynamic web interface for real-time simulation monitoring. It fetches simulation data from the FastAPI endpoints and renders it with high-performance plotting tools like Plotly and Matplotlib.
 
 ## Simulation Statistics
 #### Statistics
