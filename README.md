@@ -7,7 +7,7 @@
 - Average Trade Size: 2.73 shares
 - Total Fees Collected: $1,284,194.70
 - Top Buyer Traded Volume: ~81,000 shares
-- Time for Simulating a Day of Trading: ~30 Seconds
+- Time for Simulating a Day of Trading: ~25 Seconds
 
 
 #### Insights
