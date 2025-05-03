@@ -24,7 +24,7 @@ The key configurable areas are:
 - `num_agents`: TOtal number of regular trading agents
 - `num_hft_agents`: Number of High-Frequency_Trader agents
 - `agent_distribution`: Specifies the percentage share of agents following each strategy.
-    - MomentumL Buys on upward trends.
+    - Momentum: Buys on upward trends.
     - Contrarian: Buys dips and sells highs.
     - Risk-averse: Conservative investm ent logic.
     - Noise: Random, irrational trades.
