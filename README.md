@@ -263,5 +263,7 @@ Throughout development, emphasis was placed on modularity and transparency:
 - The agent layer incorporates a broad spectrum of strategy types with the ability to evolve and adapt,
 - he sentiment engine introduces external market shocks, and
 - The REST API-powered dashboard facilitates real-time visualization and interactivity.
+
 What sets this simulation apart is its ability to generate large-scale trade-level data while still supporting explainable and controllable experimentation—making it useful both as a research platform and as a learning tool.
+
 Ultimately, this work demonstrates that complex market phenomena can emerge from the interaction of relatively simple agents, reinforcing the value of agent-based modeling as a powerful tool in financial systems analysis. Future directions may include reinforcement learning agents, multi-exchange scenarios, regulatory simulations, or fine-grained agent communication mechanisms.
