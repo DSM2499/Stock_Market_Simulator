@@ -2,8 +2,8 @@
 
 ## Simulation Statistics
 #### Statistics
-- Total Trades Executed Per Day: 32,444 trades
-- Total Volume Traded per Day: 88,672 shares
+- Average Trades Executed Per Day: 32,444 trades
+- Average Volume Traded per Day: 88,672 shares
 - Average Trade Size: 2.73 shares
 - Total Fees Collected: $1,284,194.70
 - Top Buyer Traded Volume: ~81,000 shares
