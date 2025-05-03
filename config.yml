@@ -1,0 +1,71 @@
+num_agents: 6_000
+num_hft_agents: 10
+num_days: 100
+minutes_per_day: 390
+
+agent_distribution:
+  momentum: 0.15
+  contrarian: 0.15
+  risk_averse: 0.1
+  noise: 0.1
+  mean_reversion: 0.15
+  arbitrage: 0.15
+  evolving: 0.2
+  
+news:
+  mode: "random"  # or: script, scenario
+  daily_volatility: 0.15
+  shock_days: [35]
+  shock_magnitude: -0.9
+  breaking_events:
+    - day: 20
+      stock: AAPL
+      impact: -0.9
+      spillover: +0.6
+    - day: 45
+      stock: MSFT
+      impact: +1.4
+    - day: 70
+      stock: DSM
+      impact: +0.7
+      spillover: -0.4
+  market_events:
+    - day: 25
+      type: 'macro_crisis'
+      target: 'market'
+      impact: -0.6
+    - day: 60
+      type: 'interest_rate_cut'
+      target: 'market'
+      impact: +0.4
+    - day: 85
+      type: 'geopolitical_crisis'
+      target: 'market'
+      impact: -0.5
+
+market:
+  initial_price: 100.0
+  transaction_fee: 0.001
+
+logging:
+  output_dir: "data/"
+  record_trades: true
+  record_agent_wealth: true
+
+stocks:
+  - symbol: AAPL
+    float: 200_000
+    initial_price: 150
+  - symbol: MSFT
+    float: 200_000
+    initial_price: 130
+  - symbol: DSM
+    float: 200_000
+    initial_price: 160
+  - symbol: SHOP
+    float: 200_000
+    initial_price: 140
+
+transaction_cost:
+  type: 'percentage'
+  rate: 0.0005
