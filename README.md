@@ -23,23 +23,23 @@ The key configurable areas are:
 - `minutes_per_day`: Represents trading session durations in minutes
 
 #### 2. Agent Configuration
-- `num_agents`: TOtal number of regular trading agents
+- `num_agents`: Total number of regular trading agents
 - `num_hft_agents`: Number of High-Frequency_Trader agents
 - `agent_distribution`: Specifies the percentage share of agents following each strategy.
     - Momentum: Buys on upward trends.
     - Contrarian: Buys dips and sells highs.
-    - Risk-averse: Conservative investm ent logic.
+    - Risk-averse: Conservative investment logic.
     - Noise: Random, irrational trades.
     - Mean-reversion: Buys low, expecting reversal.
     - Arbitrage: Exploits cross-stock price inefficiencies.
-    - Evolving: Adpats strategy fynamically over time (mimics learning agents).
+    - Evolving: Adapts strategy dynamically over time (mimics learning agents).
 
 #### 3. News and Sentiment Engine
 - `mode`: `random`, `scripted`, `neutral` - controls how news is generated.
 - `daily_volatility`: Magnitude of daily sentiment noise affecting decisions.
 - `shock_days` & `shock_magnitude`: Introduces exogenous events like crashes or rallies.
 - `breaking_events`: Targeted stock events with direct and spillover impact.
-- `market_events`: Macro-level events (e.g., interest rate cuts, geopolotical crises)
+- `market_events`: Macro-level events (e.g., interest rate cuts, geopolitical crises)
 This allows realistic modeling of sentiment-driven volatility and reactions.
 
 #### 4. Market
@@ -82,9 +82,9 @@ To replicate the diversity of real-world market participants, the simulation emp
 - **Behavior**: Assume prices will revert to a fair value after deviation.
 - **Implementation**: Use a moving average to detect deviations. Buy when price < moving average; sell when price > moving average.
 - **Goal**: Exploit oversold and overbought signals.
-#### 6. Arbotrage Traders
+#### 6. Arbitrage Traders
 - **Behavior**: Look for price discrepancies between correlated stocks.
-- **Implementation**: rack spreads between stocks (e.g., AAPL vs. MSFT). If spread deviates from historical norm, take offsetting positions expecting convergence.
+- **Implementation**: track spreads between stocks (e.g., AAPL vs. MSFT). If spread deviates from historical norm, take offsetting positions expecting convergence.
 - **Goal**: Achieve market-neutral profits from inefficiencies.
 #### 7. Evolving Agents
 - **Behavior**: Begin with a base strategy, but periodically mutate to a new one based on performance.
@@ -253,7 +253,7 @@ This simulation provides a flexible and extensible framework suitable for a vari
 5. **Platform for Testing Market Interventions**:
     - Simulate tax policies, circuit breakers, or liquidity incentives.
     - Study unintended consequences of market interventions in a safe, reproducible sandbox.
-6. **Real-Time Dashboards for Monitering Trading Dynamics**:
+6. **Real-Time Dashboards for Monitoring Trading Dynamics**:
     - Provides real-time insights into price action, agent wealth, and sentiment signals—ideal for educational demos or exploratory analysis.
 7. **Trade Logs and Risk Analysis**:
     - Post-simulation analytics allow for deep dives into trade patterns, agent behaviors, volume anomalies, and risk concentrations.
@@ -263,7 +263,7 @@ This project presents a comprehensive agent-based simulation of a multi-asset fi
 Throughout development, emphasis was placed on modularity and transparency:
 - The exchange layer closely mirrors real-world trade execution mechanisms,
 - The agent layer incorporates a broad spectrum of strategy types with the ability to evolve and adapt,
-- he sentiment engine introduces external market shocks, and
+- The sentiment engine introduces external market shocks, and
 - The REST API-powered dashboard facilitates real-time visualization and interactivity.
 
 What sets this simulation apart is its ability to generate large-scale trade-level data while still supporting explainable and controllable experimentation—making it useful both as a research platform and as a learning tool.
