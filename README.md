@@ -1,7 +1,7 @@
 ![Agent Performance](assets/agent_performance.jpg)    ![Candlestick](assets/candlestick.jpg)
 
 # Multi Agent Based Stock Market Simulator
-This project presents a high-fidelity agent-based simulation of the stock market with multiple asset classes and heterogenous trading agents. This system integrates evolving strategies via genetic-like mutation, real-time sentiment analysis and RESTful APIs for streaming analytics, provinding a sandbox for exploring market microstructures, behavioral economics, and algorithmic trading strategies.
+This project presents a high-fidelity agent-based simulation of the stock market with multiple asset classes and heterogenous trading agents. This system integrates evolving strategies via genetic-like mutation, real-time sentiment analysis and RESTful APIs for streaming analytics, providing a sandbox for exploring market microstructures, behavioral economics, and algorithmic trading strategies.
 
 ## Introduction
 Modern financial markets are increasingly driven by algorithmic decision-making, with traders ranging from retail investors to high-frequency firms. Simulating such a system enables controlled experimentation, scenario testing, and behavioral analysis. The primary aim of this project was to build an agent-based stock market simulator that:
